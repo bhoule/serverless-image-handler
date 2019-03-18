@@ -49,6 +49,22 @@ Parameters:
       access to your API.
     Default: '*'
     Type: String
+  RewriteEnabled:
+    Type: String
+    Default: 'No'
+    AllowedValues:
+      - 'Yes'
+      - 'No'
+    Description: Do you want to enable the rewrite feature?
+  RewritePatterns:
+    Type: String
+    Default: '[]'
+    Description: >-
+      Your list of rewrite rules, which must be comma separated and wrapped in
+      square brackets. Each rule must be wrapped in parentheses and contain
+      regular expressions composed of two strings: one for the match condition
+      and one for substitution. Note that the regex must be compatible with
+      Python. For example: [(r'^/string_to_match$', r'rewritten_string')]
   LambdaLogRetention:
     Description: Retain Lambda CloudWatch Logs by days.
     Type: Number
@@ -390,6 +406,8 @@ Resources:
           REKOGNITION_REGION: us-east-1
           ENABLE_CORS: !Ref EnableCors
           CORS_ORIGIN: !Ref CorsOrig
+          REWRITE_ENABLED: !Ref RewriteEnabled
+          REWRITE_PATTERNS: !Ref RewritePatterns
           SEND_ANONYMOUS_DATA: !FindInMap
             - Send
             - AnonymousUsage
